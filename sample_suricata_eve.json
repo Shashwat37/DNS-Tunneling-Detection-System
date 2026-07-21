@@ -1,0 +1,228 @@
+# =============================================================================
+# Suricata eve.json — Format Documentation
+# =============================================================================
+# Auto-detected when '"event_type"' AND '"dns"' both appear in the first
+# 600 bytes of the file.
+#
+# Format: JSON Lines — one JSON object per line.
+# Only lines where event_type == "dns" are processed; all others are skipped.
+# Non-JSON lines (like this comment block) are also silently skipped.
+#
+# Standard field  ←  JSON path(s) extracted
+# --------------  -----------------------------------------------------------
+# timestamp       ← .timestamp
+# domain          ← .dns.rrname  or  .dns.queries[0].rrname
+#                   (trailing dot stripped)
+# query_type      ← .dns.rrtype  or  .dns.queries[0].rrtype  (uppercased)
+# response_size   ← sum of len(.dns.answers[n].rdata) for all answer records
+#                   (0 when .dns.answers is absent, i.e. query-only events)
+# query_length    ← computed from len(domain)
+# subdomain_count ← computed from label count
+#
+# Supported event shapes:
+#   Query event  : { "event_type": "dns", "dns": { "type": "query",
+#                    "rrname": "example.com", "rrtype": "A" } }
+#   Answer event : { "event_type": "dns", "dns": { "rrname": "example.com",
+#                    "rrtype": "A", "answers": [{"rdata": "1.2.3.4"}] } }
+#   Nested queries array also supported.
+# =============================================================================
+{"timestamp": "2024-01-15T08:00:00+0000", "event_type": "dns", "src_ip": "192.168.1.0", "src_port": 50000, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 0, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:00:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:00:10+0000", "event_type": "dns", "src_ip": "192.168.1.1", "src_port": 50001, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 1, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:00:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:00:20+0000", "event_type": "dns", "src_ip": "192.168.1.2", "src_port": 50002, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 2, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:00:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:00:30+0000", "event_type": "dns", "src_ip": "192.168.1.3", "src_port": 50003, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 3, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:00:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:00:40+0000", "event_type": "dns", "src_ip": "192.168.1.4", "src_port": 50004, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 4, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:00:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:00:50+0000", "event_type": "dns", "src_ip": "192.168.1.5", "src_port": 50005, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 5, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:00:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:01:00+0000", "event_type": "dns", "src_ip": "192.168.1.6", "src_port": 50006, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 6, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:01:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:01:10+0000", "event_type": "dns", "src_ip": "192.168.1.7", "src_port": 50007, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 7, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:01:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:01:20+0000", "event_type": "dns", "src_ip": "192.168.1.8", "src_port": 50008, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 8, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:01:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:01:30+0000", "event_type": "dns", "src_ip": "192.168.1.9", "src_port": 50009, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 9, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:01:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:01:40+0000", "event_type": "dns", "src_ip": "192.168.1.10", "src_port": 50010, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 10, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:01:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:01:50+0000", "event_type": "dns", "src_ip": "192.168.1.11", "src_port": 50011, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 11, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:01:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:02:00+0000", "event_type": "dns", "src_ip": "192.168.1.12", "src_port": 50012, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 12, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:02:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:02:10+0000", "event_type": "dns", "src_ip": "192.168.1.13", "src_port": 50013, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 13, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:02:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:02:20+0000", "event_type": "dns", "src_ip": "192.168.1.14", "src_port": 50014, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 14, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:02:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:02:30+0000", "event_type": "dns", "src_ip": "192.168.1.15", "src_port": 50015, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 15, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:02:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:02:40+0000", "event_type": "dns", "src_ip": "192.168.1.16", "src_port": 50016, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 16, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:02:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:02:50+0000", "event_type": "dns", "src_ip": "192.168.1.17", "src_port": 50017, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 17, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:02:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:03:00+0000", "event_type": "dns", "src_ip": "192.168.1.18", "src_port": 50018, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 18, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:03:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:03:10+0000", "event_type": "dns", "src_ip": "192.168.1.19", "src_port": 50019, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 19, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:03:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:03:20+0000", "event_type": "dns", "src_ip": "192.168.1.20", "src_port": 50020, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 20, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:03:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:03:30+0000", "event_type": "dns", "src_ip": "192.168.1.21", "src_port": 50021, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 21, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:03:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:03:40+0000", "event_type": "dns", "src_ip": "192.168.1.22", "src_port": 50022, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 22, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:03:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:03:50+0000", "event_type": "dns", "src_ip": "192.168.1.23", "src_port": 50023, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 23, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:03:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:04:00+0000", "event_type": "dns", "src_ip": "192.168.1.24", "src_port": 50024, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 24, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:04:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:04:10+0000", "event_type": "dns", "src_ip": "192.168.1.25", "src_port": 50025, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 25, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:04:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:04:20+0000", "event_type": "dns", "src_ip": "192.168.1.26", "src_port": 50026, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 26, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:04:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:04:30+0000", "event_type": "dns", "src_ip": "192.168.1.27", "src_port": 50027, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 27, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:04:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:04:40+0000", "event_type": "dns", "src_ip": "192.168.1.28", "src_port": 50028, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 28, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:04:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:04:50+0000", "event_type": "dns", "src_ip": "192.168.1.29", "src_port": 50029, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 29, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:04:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:05:00+0000", "event_type": "dns", "src_ip": "192.168.1.30", "src_port": 50030, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 30, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:05:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:05:10+0000", "event_type": "dns", "src_ip": "192.168.1.31", "src_port": 50031, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 31, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:05:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:05:20+0000", "event_type": "dns", "src_ip": "192.168.1.32", "src_port": 50032, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 32, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:05:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:05:30+0000", "event_type": "dns", "src_ip": "192.168.1.33", "src_port": 50033, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 33, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:05:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:05:40+0000", "event_type": "dns", "src_ip": "192.168.1.34", "src_port": 50034, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 34, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:05:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:05:50+0000", "event_type": "dns", "src_ip": "192.168.1.35", "src_port": 50035, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 35, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:05:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:06:00+0000", "event_type": "dns", "src_ip": "192.168.1.36", "src_port": 50036, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 36, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:06:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:06:10+0000", "event_type": "dns", "src_ip": "192.168.1.37", "src_port": 50037, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 37, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:06:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:06:20+0000", "event_type": "dns", "src_ip": "192.168.1.38", "src_port": 50038, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 38, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:06:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:06:30+0000", "event_type": "dns", "src_ip": "192.168.1.39", "src_port": 50039, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 39, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:06:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:06:40+0000", "event_type": "dns", "src_ip": "192.168.1.40", "src_port": 50040, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 40, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:06:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:06:50+0000", "event_type": "dns", "src_ip": "192.168.1.41", "src_port": 50041, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 41, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:06:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:07:00+0000", "event_type": "dns", "src_ip": "192.168.1.42", "src_port": 50042, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 42, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:07:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:07:10+0000", "event_type": "dns", "src_ip": "192.168.1.43", "src_port": 50043, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 43, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:07:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:07:20+0000", "event_type": "dns", "src_ip": "192.168.1.44", "src_port": 50044, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 44, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:07:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:07:30+0000", "event_type": "dns", "src_ip": "192.168.1.45", "src_port": 50045, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 45, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:07:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:07:40+0000", "event_type": "dns", "src_ip": "192.168.1.46", "src_port": 50046, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 46, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:07:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:07:50+0000", "event_type": "dns", "src_ip": "192.168.1.47", "src_port": 50047, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 47, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:07:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:08:00+0000", "event_type": "dns", "src_ip": "192.168.1.48", "src_port": 50048, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 48, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:08:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:08:10+0000", "event_type": "dns", "src_ip": "192.168.1.49", "src_port": 50049, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 49, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:08:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:08:20+0000", "event_type": "dns", "src_ip": "192.168.1.50", "src_port": 50050, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 50, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:08:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:08:30+0000", "event_type": "dns", "src_ip": "192.168.1.51", "src_port": 50051, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 51, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:08:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:08:40+0000", "event_type": "dns", "src_ip": "192.168.1.52", "src_port": 50052, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 52, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:08:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:08:50+0000", "event_type": "dns", "src_ip": "192.168.1.53", "src_port": 50053, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 53, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:08:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:09:00+0000", "event_type": "dns", "src_ip": "192.168.1.54", "src_port": 50054, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 54, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:09:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:09:10+0000", "event_type": "dns", "src_ip": "192.168.1.55", "src_port": 50055, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 55, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:09:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:09:20+0000", "event_type": "dns", "src_ip": "192.168.1.56", "src_port": 50056, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 56, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:09:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:09:30+0000", "event_type": "dns", "src_ip": "192.168.1.57", "src_port": 50057, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 57, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:09:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:09:40+0000", "event_type": "dns", "src_ip": "192.168.1.58", "src_port": 50058, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 58, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:09:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:09:50+0000", "event_type": "dns", "src_ip": "192.168.1.59", "src_port": 50059, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 59, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:09:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:10:00+0000", "event_type": "dns", "src_ip": "192.168.1.60", "src_port": 50060, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 60, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:10:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:10:10+0000", "event_type": "dns", "src_ip": "192.168.1.61", "src_port": 50061, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 61, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:10:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:10:20+0000", "event_type": "dns", "src_ip": "192.168.1.62", "src_port": 50062, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 62, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:10:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:10:30+0000", "event_type": "dns", "src_ip": "192.168.1.63", "src_port": 50063, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 63, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:10:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:10:40+0000", "event_type": "dns", "src_ip": "192.168.1.64", "src_port": 50064, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 64, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:10:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:10:50+0000", "event_type": "dns", "src_ip": "192.168.1.65", "src_port": 50065, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 65, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:10:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:11:00+0000", "event_type": "dns", "src_ip": "192.168.1.66", "src_port": 50066, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 66, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:11:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:11:10+0000", "event_type": "dns", "src_ip": "192.168.1.67", "src_port": 50067, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 67, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:11:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:11:20+0000", "event_type": "dns", "src_ip": "192.168.1.68", "src_port": 50068, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 68, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:11:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:11:30+0000", "event_type": "dns", "src_ip": "192.168.1.69", "src_port": 50069, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 69, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:11:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:11:40+0000", "event_type": "dns", "src_ip": "192.168.1.70", "src_port": 50070, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 70, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:11:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:11:50+0000", "event_type": "dns", "src_ip": "192.168.1.71", "src_port": 50071, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 71, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:11:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:12:00+0000", "event_type": "dns", "src_ip": "192.168.1.72", "src_port": 50072, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 72, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:12:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:12:10+0000", "event_type": "dns", "src_ip": "192.168.1.73", "src_port": 50073, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 73, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:12:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:12:20+0000", "event_type": "dns", "src_ip": "192.168.1.74", "src_port": 50074, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 74, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:12:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:12:30+0000", "event_type": "dns", "src_ip": "192.168.1.75", "src_port": 50075, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 75, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:12:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:12:40+0000", "event_type": "dns", "src_ip": "192.168.1.76", "src_port": 50076, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 76, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:12:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:12:50+0000", "event_type": "dns", "src_ip": "192.168.1.77", "src_port": 50077, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 77, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:12:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:13:00+0000", "event_type": "dns", "src_ip": "192.168.1.78", "src_port": 50078, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 78, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:13:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:13:10+0000", "event_type": "dns", "src_ip": "192.168.1.79", "src_port": 50079, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 79, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:13:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:13:20+0000", "event_type": "dns", "src_ip": "192.168.1.80", "src_port": 50080, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 80, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:13:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:13:30+0000", "event_type": "dns", "src_ip": "192.168.1.81", "src_port": 50081, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 81, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:13:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:13:40+0000", "event_type": "dns", "src_ip": "192.168.1.82", "src_port": 50082, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 82, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:13:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:13:50+0000", "event_type": "dns", "src_ip": "192.168.1.83", "src_port": 50083, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 83, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:13:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:14:00+0000", "event_type": "dns", "src_ip": "192.168.1.84", "src_port": 50084, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 84, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:14:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:14:10+0000", "event_type": "dns", "src_ip": "192.168.1.85", "src_port": 50085, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 85, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:14:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:14:20+0000", "event_type": "dns", "src_ip": "192.168.1.86", "src_port": 50086, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 86, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:14:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:14:30+0000", "event_type": "dns", "src_ip": "192.168.1.87", "src_port": 50087, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 87, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:14:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:14:40+0000", "event_type": "dns", "src_ip": "192.168.1.88", "src_port": 50088, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 88, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:14:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:14:50+0000", "event_type": "dns", "src_ip": "192.168.1.89", "src_port": 50089, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 89, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:14:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:15:00+0000", "event_type": "dns", "src_ip": "192.168.1.90", "src_port": 50090, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 90, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:15:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:15:10+0000", "event_type": "dns", "src_ip": "192.168.1.91", "src_port": 50091, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 91, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:15:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:15:20+0000", "event_type": "dns", "src_ip": "192.168.1.92", "src_port": 50092, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 92, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:15:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:15:30+0000", "event_type": "dns", "src_ip": "192.168.1.93", "src_port": 50093, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 93, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:15:30", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:15:40+0000", "event_type": "dns", "src_ip": "192.168.1.94", "src_port": 50094, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 94, "rrname": "docs.python.org", "rrtype": "CNAME", "tx_id": 0, "answers": [{"rrname": "docs.python.org", "rrtype": "CNAME", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:15:40", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:15:50+0000", "event_type": "dns", "src_ip": "192.168.1.95", "src_port": 50095, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 95, "rrname": "c2server.dnscat.net", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "c2server.dnscat.net", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:15:50", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:16:00+0000", "event_type": "dns", "src_ip": "192.168.1.96", "src_port": 50096, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 96, "rrname": "google.com", "rrtype": "A", "tx_id": 0, "answers": [{"rrname": "google.com", "rrtype": "A", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:16:00", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:16:10+0000", "event_type": "dns", "src_ip": "192.168.1.97", "src_port": 50097, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 97, "rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "tx_id": 0, "answers": [{"rrname": "a8f3kq2.tunnel.example.com", "rrtype": "TXT", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:16:10", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:16:20+0000", "event_type": "dns", "src_ip": "192.168.1.98", "src_port": 50098, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 98, "rrname": "github.com", "rrtype": "AAAA", "tx_id": 0, "answers": [{"rrname": "github.com", "rrtype": "AAAA", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:16:20", "event_type": "alert"}
+{"timestamp": "2024-01-15T08:16:30+0000", "event_type": "dns", "src_ip": "192.168.1.99", "src_port": 50099, "dest_ip": "8.8.8.8", "dest_port": 53, "dns": {"type": "query", "id": 99, "rrname": "exfildata.evil.io", "rrtype": "NULL", "tx_id": 0, "answers": [{"rrname": "exfildata.evil.io", "rrtype": "NULL", "rdata": "1.2.3.4"}]}}
+{"timestamp": "2024-01-15T08:16:30", "event_type": "alert"}

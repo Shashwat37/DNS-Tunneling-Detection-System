@@ -1,0 +1,141 @@
+# =============================================================================
+# Generic CSV / TSV — Format Documentation
+# =============================================================================
+# This format accepts ANY CSV or TSV file that contains at least one column
+# whose name maps to 'domain' (see synonyms below).
+# Lines beginning with '#' are ignored by the parser.
+# Supported delimiters: comma (,)  tab (\t)  semicolon (;)  pipe (|)
+#
+# Column          Accepted header names (any one is recognised)
+# --------------  -----------------------------------------------------------
+# timestamp     : timestamp, ts, time, date, datetime, date_time,
+#                 event_time, log_time, query_time, log_timestamp,
+#                 event_datetime, time_utc, received_time, created_at
+#
+# domain        : domain, query, fqdn, qname, query_name, hostname, host,
+#                 dns_query, rrname, name, domain_name, queried_domain,
+#                 dns_question_name, queryname, dns_fqdn, dns_record_name,
+#                 network_dns_query, lookup, searched_domain
+#
+# query_type    : query_type, type, qtype, record_type, dns_type,
+#                 rrtype, qtype_name, dns_record_type, dns_question_type,
+#                 dns_query_type, dnstype, lookup_type, rtype
+#
+# query_length  : query_length, length, len, qlen, payload_len, size,
+#                 query_size, bytes, query_bytes, packet_length,
+#                 frame_len, ip_len, sent_bytes
+#
+# subdomain_count: subdomain_count, labels, depth, label_count,
+#                 subdomain_levels, num_labels, num_subdomains, n_labels,
+#                 dot_count, levels, subdomains
+#
+# response_size : response_size, resp_size, answer_size, response_len,
+#                 response_bytes, reply_length, resp_len, bytes_received,
+#                 received_bytes, dns_resp_len, udp_length
+#
+# Missing columns are computed (query_length = len(domain)) or defaulted to 0.
+#
+# CamelCase / PascalCase / dot-separated column names are normalised to
+# snake_case before synonym lookup (e.g. DnsQueryName → dns_query_name).
+# =============================================================================
+event_time	fqdn	rrtype	payload_len	num_labels	resp_len
+2024-01-15T08:00:00	google.com	A	20	0	100
+2024-01-15T08:00:10	a8f3kq2.tunnel.example.com	TXT	21	2	101
+2024-01-15T08:00:20	github.com	AAAA	22	0	102
+2024-01-15T08:00:30	exfildata.evil.io	NULL	23	1	103
+2024-01-15T08:00:40	docs.python.org	CNAME	24	1	104
+2024-01-15T08:00:50	c2server.dnscat.net	A	25	1	105
+2024-01-15T08:01:00	google.com	A	26	0	106
+2024-01-15T08:01:10	a8f3kq2.tunnel.example.com	TXT	27	2	107
+2024-01-15T08:01:20	github.com	AAAA	28	0	108
+2024-01-15T08:01:30	exfildata.evil.io	NULL	29	1	109
+2024-01-15T08:01:40	docs.python.org	CNAME	30	1	110
+2024-01-15T08:01:50	c2server.dnscat.net	A	31	1	111
+2024-01-15T08:02:00	google.com	A	32	0	112
+2024-01-15T08:02:10	a8f3kq2.tunnel.example.com	TXT	33	2	113
+2024-01-15T08:02:20	github.com	AAAA	34	0	114
+2024-01-15T08:02:30	exfildata.evil.io	NULL	35	1	115
+2024-01-15T08:02:40	docs.python.org	CNAME	36	1	116
+2024-01-15T08:02:50	c2server.dnscat.net	A	37	1	117
+2024-01-15T08:03:00	google.com	A	38	0	118
+2024-01-15T08:03:10	a8f3kq2.tunnel.example.com	TXT	39	2	119
+2024-01-15T08:03:20	github.com	AAAA	40	0	120
+2024-01-15T08:03:30	exfildata.evil.io	NULL	41	1	121
+2024-01-15T08:03:40	docs.python.org	CNAME	42	1	122
+2024-01-15T08:03:50	c2server.dnscat.net	A	43	1	123
+2024-01-15T08:04:00	google.com	A	44	0	124
+2024-01-15T08:04:10	a8f3kq2.tunnel.example.com	TXT	45	2	125
+2024-01-15T08:04:20	github.com	AAAA	46	0	126
+2024-01-15T08:04:30	exfildata.evil.io	NULL	47	1	127
+2024-01-15T08:04:40	docs.python.org	CNAME	48	1	128
+2024-01-15T08:04:50	c2server.dnscat.net	A	49	1	129
+2024-01-15T08:05:00	google.com	A	50	0	130
+2024-01-15T08:05:10	a8f3kq2.tunnel.example.com	TXT	51	2	131
+2024-01-15T08:05:20	github.com	AAAA	52	0	132
+2024-01-15T08:05:30	exfildata.evil.io	NULL	53	1	133
+2024-01-15T08:05:40	docs.python.org	CNAME	54	1	134
+2024-01-15T08:05:50	c2server.dnscat.net	A	55	1	135
+2024-01-15T08:06:00	google.com	A	56	0	136
+2024-01-15T08:06:10	a8f3kq2.tunnel.example.com	TXT	57	2	137
+2024-01-15T08:06:20	github.com	AAAA	58	0	138
+2024-01-15T08:06:30	exfildata.evil.io	NULL	59	1	139
+2024-01-15T08:06:40	docs.python.org	CNAME	60	1	140
+2024-01-15T08:06:50	c2server.dnscat.net	A	61	1	141
+2024-01-15T08:07:00	google.com	A	62	0	142
+2024-01-15T08:07:10	a8f3kq2.tunnel.example.com	TXT	63	2	143
+2024-01-15T08:07:20	github.com	AAAA	64	0	144
+2024-01-15T08:07:30	exfildata.evil.io	NULL	65	1	145
+2024-01-15T08:07:40	docs.python.org	CNAME	66	1	146
+2024-01-15T08:07:50	c2server.dnscat.net	A	67	1	147
+2024-01-15T08:08:00	google.com	A	68	0	148
+2024-01-15T08:08:10	a8f3kq2.tunnel.example.com	TXT	69	2	149
+2024-01-15T08:08:20	github.com	AAAA	70	0	150
+2024-01-15T08:08:30	exfildata.evil.io	NULL	71	1	151
+2024-01-15T08:08:40	docs.python.org	CNAME	72	1	152
+2024-01-15T08:08:50	c2server.dnscat.net	A	73	1	153
+2024-01-15T08:09:00	google.com	A	74	0	154
+2024-01-15T08:09:10	a8f3kq2.tunnel.example.com	TXT	75	2	155
+2024-01-15T08:09:20	github.com	AAAA	76	0	156
+2024-01-15T08:09:30	exfildata.evil.io	NULL	77	1	157
+2024-01-15T08:09:40	docs.python.org	CNAME	78	1	158
+2024-01-15T08:09:50	c2server.dnscat.net	A	79	1	159
+2024-01-15T08:10:00	google.com	A	80	0	160
+2024-01-15T08:10:10	a8f3kq2.tunnel.example.com	TXT	81	2	161
+2024-01-15T08:10:20	github.com	AAAA	82	0	162
+2024-01-15T08:10:30	exfildata.evil.io	NULL	83	1	163
+2024-01-15T08:10:40	docs.python.org	CNAME	84	1	164
+2024-01-15T08:10:50	c2server.dnscat.net	A	85	1	165
+2024-01-15T08:11:00	google.com	A	86	0	166
+2024-01-15T08:11:10	a8f3kq2.tunnel.example.com	TXT	87	2	167
+2024-01-15T08:11:20	github.com	AAAA	88	0	168
+2024-01-15T08:11:30	exfildata.evil.io	NULL	89	1	169
+2024-01-15T08:11:40	docs.python.org	CNAME	90	1	170
+2024-01-15T08:11:50	c2server.dnscat.net	A	91	1	171
+2024-01-15T08:12:00	google.com	A	92	0	172
+2024-01-15T08:12:10	a8f3kq2.tunnel.example.com	TXT	93	2	173
+2024-01-15T08:12:20	github.com	AAAA	94	0	174
+2024-01-15T08:12:30	exfildata.evil.io	NULL	95	1	175
+2024-01-15T08:12:40	docs.python.org	CNAME	96	1	176
+2024-01-15T08:12:50	c2server.dnscat.net	A	97	1	177
+2024-01-15T08:13:00	google.com	A	98	0	178
+2024-01-15T08:13:10	a8f3kq2.tunnel.example.com	TXT	99	2	179
+2024-01-15T08:13:20	github.com	AAAA	20	0	180
+2024-01-15T08:13:30	exfildata.evil.io	NULL	21	1	181
+2024-01-15T08:13:40	docs.python.org	CNAME	22	1	182
+2024-01-15T08:13:50	c2server.dnscat.net	A	23	1	183
+2024-01-15T08:14:00	google.com	A	24	0	184
+2024-01-15T08:14:10	a8f3kq2.tunnel.example.com	TXT	25	2	185
+2024-01-15T08:14:20	github.com	AAAA	26	0	186
+2024-01-15T08:14:30	exfildata.evil.io	NULL	27	1	187
+2024-01-15T08:14:40	docs.python.org	CNAME	28	1	188
+2024-01-15T08:14:50	c2server.dnscat.net	A	29	1	189
+2024-01-15T08:15:00	google.com	A	30	0	190
+2024-01-15T08:15:10	a8f3kq2.tunnel.example.com	TXT	31	2	191
+2024-01-15T08:15:20	github.com	AAAA	32	0	192
+2024-01-15T08:15:30	exfildata.evil.io	NULL	33	1	193
+2024-01-15T08:15:40	docs.python.org	CNAME	34	1	194
+2024-01-15T08:15:50	c2server.dnscat.net	A	35	1	195
+2024-01-15T08:16:00	google.com	A	36	0	196
+2024-01-15T08:16:10	a8f3kq2.tunnel.example.com	TXT	37	2	197
+2024-01-15T08:16:20	github.com	AAAA	38	0	198
+2024-01-15T08:16:30	exfildata.evil.io	NULL	39	1	199

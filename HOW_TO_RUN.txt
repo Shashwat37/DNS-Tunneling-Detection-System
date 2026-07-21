@@ -1,0 +1,125 @@
+===============================================================
+  DNS Tunneling Detection System (DTDS) — How to Run
+===============================================================
+
+PREREQUISITES
+-------------
+  • Docker Desktop  (https://www.docker.com/products/docker-desktop)
+  • Git             (https://git-scm.com)
+  That's it. No Python, Node.js, or MongoDB needed locally.
+
+
+STEP 1 — Clone / open the project
+----------------------------------
+  If you already have the folder, skip this step.
+
+    git clone <repo-url>
+    cd DTDS
+
+
+STEP 2 — Create the .env file
+------------------------------
+  Copy the example and fill in a secret key:
+
+    Windows (PowerShell):
+      Copy-Item .env.example .env
+
+    Mac / Linux:
+      cp .env.example .env
+
+  Then open .env and set JWT_SECRET to any long random string, e.g.:
+
+    JWT_SECRET=change_me_to_something_long_and_random_like_abc123xyz
+
+
+STEP 3 — Start all services
+-----------------------------
+  Run this single command from the DTDS folder:
+
+    docker-compose up --build
+
+  First run downloads images and builds containers (~3-5 minutes).
+  Subsequent runs start in ~5 seconds (layers are cached).
+
+  You will see logs from three services:
+    dtds_mongo    — MongoDB database
+    dtds_backend  — FastAPI backend (port 8000)
+    dtds_frontend — React frontend served by Nginx (port 3000)
+
+  Wait until you see:
+    "dtds_backend  | Application startup complete."
+
+
+STEP 4 — Open the app
+-----------------------
+  Frontend (main app):   http://localhost:3000
+  Backend API docs:      http://localhost:8000/docs
+
+
+STEP 5 — Use the app
+----------------------
+  1. Go to http://localhost:3000/register
+     Create an account (name, email, password).
+
+  2. Log in at http://localhost:3000/login
+
+  3. Upload a DNS log file at /upload
+     A sample file is included: sample_dns_logs.csv
+     Supported formats: CSV, Zeek dns.log, Suricata eve.json,
+                        AWS Route53, BIND named, dnsmasq, Generic TSV
+
+  4. View results at /results/<id>
+     Charts: Classification split, Query types, Top suspicious
+             domains, Entropy distribution, Volume over time
+     Table:  Sortable, filterable, paginated per-row results
+
+  5. Export results as CSV using the "Export CSV" button.
+
+  6. View past uploads at /history
+
+
+STOPPING THE APP
+-----------------
+  Stop containers (data is preserved):
+    docker-compose down
+
+  Stop and delete all data (MongoDB volume):
+    docker-compose down -v
+
+
+PORTS USED
+-----------
+  3000  — Frontend (React)
+  8000  — Backend API (FastAPI)
+  27017 — MongoDB (internal, mapped for debugging)
+
+
+SAMPLE FILES INCLUDED
+----------------------
+  sample_dns_logs.csv        — DTDS native format  (500 rows)
+  sample_zeek_dns.log        — Zeek / Bro dns.log
+  sample_suricata_eve.json   — Suricata eve.json
+  sample_route53.csv         — AWS Route53 query log
+  sample_bind_named.log      — ISC BIND named log
+  sample_dnsmasq.log         — dnsmasq syslog
+  sample_generic.tsv         — Generic TSV (auto-mapped columns)
+
+  Each file has a header comment block explaining the accepted
+  column names for that format.
+
+
+TROUBLESHOOTING
+----------------
+  Port already in use?
+    Stop any local MongoDB/Node servers, or edit docker-compose.yml
+    to change the host-side port numbers.
+
+  Container won't start?
+    docker-compose logs backend
+    docker-compose logs frontend
+
+  Reset everything from scratch:
+    docker-compose down -v
+    docker-compose up --build
+
+===============================================================
