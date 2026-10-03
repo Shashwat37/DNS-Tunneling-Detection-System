@@ -8,12 +8,12 @@ services:
     plan: free
     envVars:
       - key: MONGO_URI
-        sync: false
+        value: mongodb+srv://dtdsuser:dtdspassword123@cluster0.9jnkelu.mongodb.net/dtds?retryWrites=true&w=majority&appName=Cluster0
       - key: JWT_SECRET
-        generateValue: true
+        value: a9f3e2b7c4d8f1a6e5b3c2d9f8a7b4c1e6d3f2a8b5c7d0e9f4a3b6c2d8f1e7
       - key: JWT_ALGORITHM
         value: HS256
       - key: JWT_EXPIRE_MINUTES
-        value: 60
+        value: "60"
       - key: APP_ENV
         value: production
