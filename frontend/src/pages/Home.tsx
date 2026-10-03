@@ -108,7 +108,13 @@ export default function Home() {
 
           {healthStatus === 'error' && (
             <p className="mt-3 text-xs text-red-400 bg-red-500/10 rounded-lg p-3">
-              Cannot reach the backend. Make sure <code className="font-mono">docker-compose up</code> is running.
+              Cannot reach the backend. It may be waking up — please wait 30 seconds and{' '}
+              <button
+                onClick={() => window.location.reload()}
+                className="underline hover:text-red-300 cursor-pointer bg-transparent border-none"
+              >
+                refresh the page
+              </button>.
             </p>
           )}
         </div>
@@ -124,14 +130,14 @@ export default function Home() {
         </div>
 
         <p className="text-xs text-gray-600">
-          Milestone 1 — Setup complete · API docs at{' '}
+          API docs at{' '}
           <a
-            href="http://localhost:8000/docs"
+            href="https://dtds-backend.onrender.com/docs"
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent hover:underline"
           >
-            localhost:8000/docs
+            dtds-backend.onrender.com/docs
           </a>
         </p>
       </div>
