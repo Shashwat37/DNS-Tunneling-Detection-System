@@ -31,7 +31,11 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:5173",
+        # Vercel deployments
+        "https://dns-tunneling-detection-system-8wtvzwakz-shashwat8.vercel.app",
+        "https://dns-tunneling-detection-system.vercel.app",
     ],
+    allow_origin_regex=r"https://dns-tunneling-detection-system-.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
